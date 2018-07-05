@@ -13,6 +13,19 @@ class Client extends AbstractModel
         $this->addContact($email, $first_name, $last_name);
     }
 
+    public static function findByClientEmail($email)
+    {
+        $url = sprintf('%s?email=%s', static::getRoute(), $email);
+        $data = static::sendRequest($url);
+
+        $result = [];
+        foreach ($data as $item) {
+            $result[] = static::hydrate($item);
+        }
+
+        return $result;
+    }
+
     public function addContact($email = '', $first_name = '', $last_name = '')
     {
         $contact = new stdClass();
